@@ -1,50 +1,81 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [theme, setTheme] = useState((window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light");
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+
+    // Update CSS variables sesuai tema
+    const root = document.documentElement;
+    if (newTheme === "dark") {
+      root.style.setProperty("--text", "#9ca3af");
+      root.style.setProperty("--text-h", "#f3f4f6");
+      root.style.setProperty("--bg", "#16171d");
+      root.style.setProperty("--border", "#2e303a");
+      root.style.setProperty("--code-bg", "#1f2028");
+      root.style.setProperty("--accent", "#c084fc");
+      root.style.setProperty("--accent-bg", "rgba(192, 132, 252, 0.15)");
+      root.style.setProperty("--accent-border", "rgba(192, 132, 252, 0.5)");
+      root.style.setProperty("--social-bg", "rgba(47, 48, 58, 0.5)");
+    } else {
+      root.style.setProperty("--text", "#6b6375");
+      root.style.setProperty("--text-h", "#08060d");
+      root.style.setProperty("--bg", "#fff");
+      root.style.setProperty("--border", "#e5e4e7");
+      root.style.setProperty("--code-bg", "#f4f3ec");
+      root.style.setProperty("--accent", "#aa3bff");
+      root.style.setProperty("--accent-bg", "rgba(170, 59, 255, 0.1)");
+      root.style.setProperty("--accent-border", "rgba(170, 59, 255, 0.5)");
+      root.style.setProperty("--social-bg", "rgba(244, 243, 236, 0.5)");
+    }
+  };
 
   return (
-    <nav className="relative bg-gray-800/50 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10">
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between">
+    <nav className="relative bg-[var(--bg)] text-[var(--text)] border-b border-[var(--border)]">
+      <div className="mx-auto max-w-7xl px-4 flex h-16 items-center justify-between">
+        {/* Logo */}
+        <p className="text-[var(--text-h)] font-bold">EduStruct</p>
 
-          {/* Logo + Menu */}
-          <div className="flex flex-1 items-start justify-start sm:items-stretch sm:justify-start">
-            <div className="flex shrink-0 items-start">
-              <p className='text-white'>EduStruct</p>
-            </div>
-          </div>
-
-          {/* Right side (notifications + profile) */}
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button
-              type="button"
-              className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500"
+        {/* Tombol toggle tema */}
+        <button
+          onClick={toggleTheme}
+          className="rounded-full p-2 hover:bg-[var(--accent-bg)]"
+        >
+          {theme === "light" ? (
+            // Ikon matahari
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              className="size-6 text-yellow-500"
             >
-              <span className="sr-only">View notifications</span>
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="1.5"
-                className="size-6"
-              >
-                <path
-                  d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
+              <circle cx="12" cy="12" r="5" />
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+          ) : (
+            // Ikon bulan
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              className="size-6 text-indigo-400"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+        </button>
       </div>
     </nav>
   );
 }
-export default App
+
+export default App;
