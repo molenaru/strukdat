@@ -37,7 +37,7 @@ function Navbar() {
     <nav className="relative bg-[var(--bg)] text-[var(--text)] border-b border-[var(--border)]">
       <div className="mx-auto max-w-7xl px-4 flex h-16 items-center justify-between">
         {/* Logo */}
-        <p className="text-[var(--text-h)] font-bold">EduStruct</p>
+        <img src="/logo.png" className="h-32"  alt="" />
 
         {/* Tombol toggle tema */}
         <button

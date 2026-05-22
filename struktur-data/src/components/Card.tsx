@@ -1,27 +1,27 @@
 // components/Card.tsx
 
-function Card() {
+const Card = ({ title, description, imageUrl, color }) => {
   return (
-    <div className="w-80 rounded-2xl shadow-xl overflow-hidden hover:scale-105 transition duration-300">
+    <div className={`w-60 rounded-2xl shadow-xl overflow-hidden hover:scale-105 transition duration-300 ${color}`}>
 
       <img
-        src="https://picsum.photos/300/200"
+        src={imageUrl}
         alt="Card"
-        className="w-full h-48 object-cover"
+        className="w-full h-36 object-cover"
       />
 
-      <div className="p-5">
+      <div className="p-5 pt-0">
 
-        <h1 className="text-2xl font-bold  mb-2">
-          Bubble Sort
+        <h1 className="text-2xl font-bold mb-2">
+          {title}
         </h1>
-
+        
         <p className="mb-4">
-          Algoritma sorting sederhana menggunakan perbandingan antar elemen.
+          {description}
         </p>
 
-        <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition">
-          Selengkapnya
+        <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition w-full">
+          Mulai
         </button>
 
       </div>
