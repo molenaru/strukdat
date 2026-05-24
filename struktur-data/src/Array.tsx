@@ -1,5 +1,5 @@
 import React from 'react';
-import { getItems } from './backend/array'; 
+import { getItems } from './backend/array.ts';
 
 const ArrayComponent: React.FC = () => {
   const items = getItems(); 
