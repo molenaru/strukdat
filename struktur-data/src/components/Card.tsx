@@ -1,6 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
-const Card = ({ title, description, imageUrl, color, path }) => {
+interface CardProps {
+  title: string;
+  description: string;
+  imageUrl: string;
+  color: string;
+  path?: string;
+}
+
+const Card: React.FC<CardProps> = ({ title, description, imageUrl, color, path }) => {
   const navigate = useNavigate();
 
   return (
