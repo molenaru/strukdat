@@ -34,6 +34,7 @@ function Navbar() {
   };
 
   return (
+    // Navbar
     <nav className="relative bg-[var(--bg)] text-[var(--text)] border-b border-[var(--border)]">
       <div className="mx-auto max-w-7xl px-4 flex h-16 items-center justify-between">
         {/* Logo */}
