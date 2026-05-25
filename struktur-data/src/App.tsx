@@ -7,7 +7,6 @@ function App() {
   return (
     <div className="min-h-screen">
       <Nav />
-
       {/* title */}
       <Routes>
         {/* Halaman utama */}
