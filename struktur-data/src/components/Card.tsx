@@ -3,30 +3,32 @@ import { useNavigate } from "react-router-dom";
 interface CardProps {
   title: string;
   description: string;
-  imageUrl: string;
   color: string;
   path?: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, description, imageUrl, color, path }) => {
+const Card: React.FC<CardProps> = ({ title, description, color, path }) => {
   const navigate = useNavigate();
 
   return (
     <div
-      className={`w-60 rounded-2xl shadow-xl overflow-hidden hover:scale-105 transition duration-300 ${color}`}
+      className={`border border-black text-black w-80 h-85 rounded-xl shadow-xl overflow-hidden hover:scale-105 transition duration-300 flex flex-col justify-between ${color}`}
     >
-      <img src={imageUrl} alt="Card" className="w-full h-36 object-cover" />
-      <div className="p-5 pt-0">
-        <h1 className="text-2xl font-bold mb-2">{title}</h1>
-        <p className="mb-4">{description}</p>
+      <div className="p-5 pt-2 text-justify">
+        <h1 className="text-xl text-black font-bold mb-2 mt-1">{title}</h1>
+        <p className="text-sm">{description}</p>
+      </div>
+
+      <div className="pt-0">
         <button
-          className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition w-full"
+          className="bg-black/20 rounded-lg p-2 transition w-full hover:bg-black/30 border border-black"
           onClick={() => navigate(path || "/array")}
         >
           Mulai
         </button>
       </div>
     </div>
+
   );
 };
 
