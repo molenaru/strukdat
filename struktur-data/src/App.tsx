@@ -4,6 +4,7 @@ import Card from "./components/Card";
 import ArrayComponent from "./Array";
 import SortingComponent from "./sorting";
 import QueueComponent from "./queue";
+import StackComponent from "./stack";
 
 function App() {
   return (
@@ -84,6 +85,7 @@ function App() {
         <Route path="/array" element={<ArrayComponent />} />
         <Route path="/sorting" element={<SortingComponent />} />
         <Route path="/queue" element={<QueueComponent />} />
+        <Route path="/stack" element={<StackComponent />} />
       </Routes>
     </div>
   );
