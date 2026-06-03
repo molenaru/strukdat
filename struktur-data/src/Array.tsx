@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { createArray, getNumbers, addNextValue, addBatchValues, updateValue, deleteValue } from './backend/array';
+import { createArray, getNumbers, addNextValue, addBatchValues, updateValue, deleteValue, clearArray } from './backend/array';
 
 const ArrayComponent: React.FC = () => {
   const [numbers, setNumbers] = useState<(number | null)[]>([]);
@@ -43,6 +43,19 @@ const ArrayComponent: React.FC = () => {
       setError(err.message);
     }
   };
+
+  const generateRandomArray = () => {
+    const size = Math.floor(Math.random() * 19) + 2;
+    const values = Array.from({ length: size }, () => Math.floor(Math.random() * 99) + 1);
+    createArray(size);
+    addBatchValues(values);
+    setNumbers(getNumbers());
+    setError('');
+  };
+
+  useEffect(() => {
+    generateRandomArray();
+  }, []);
 
   const handleAddValue = () => {
     const val = Number(inputValue);
@@ -99,6 +112,20 @@ const ArrayComponent: React.FC = () => {
     }
   };
 
+  const handleRandomArray = () => {
+    try {
+      generateRandomArray();
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  const handleClearArray = () => {
+    clearArray();
+    setNumbers(getNumbers());
+    setError('');
+  };
+
   const handleDeleteValue = () => {
     const idx = Number(deleteIndex);
     if (isNaN(idx)) {
@@ -123,7 +150,7 @@ const ArrayComponent: React.FC = () => {
         <h1 className="text-xl font-bold text-black dark:text-white text-start mb-4 mt-0">Array</h1>
 
         {/* Tampilan array horizontal */}
-        <div className="flex gap-2 flex-wrap justify-center pb-8">
+        <div className="flex gap-2 flex-wrap justify-center pb-8 min-h-[120px]">
           {numbers.map((num, index) => (
             <div key={index} className="flex flex-col items-center">
               <div className="w-12 h-12 border flex items-center justify-center text-black bg-gray-100">
@@ -139,7 +166,7 @@ const ArrayComponent: React.FC = () => {
 
 
         {/* section array */}
-        <div className="mx-auto p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700">
+        <div className="mx-auto p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700 w-full">
 
           {/* Title */}
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0  text-start">
@@ -172,7 +199,6 @@ const ArrayComponent: React.FC = () => {
             </div>
 
             {/* Add Value */}
-            {numbers.length > 0 && (
               <div className="grid grid-cols-[180px_1fr] items-center gap-4">
                 <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
                   Add Value
@@ -183,21 +209,21 @@ const ArrayComponent: React.FC = () => {
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder="Value"
-                    className="h-11 w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    disabled={numbers.length === 0}
+                    className="h-11 w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
                   />
 
                   <button
                     onClick={handleAddValue}
-                    className="h-11 min-w-[120px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl"
+                    disabled={numbers.length === 0}
+                    className="h-11 min-w-[120px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     Add
                   </button>
                 </div>
               </div>
-            )}
 
             {/* Add Batch */}
-            {numbers.length > 0 && (
               <div className="grid grid-cols-[180px_1fr] items-center gap-4">
                 <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
                   Add Batch
@@ -208,21 +234,42 @@ const ArrayComponent: React.FC = () => {
                     value={batchValues}
                     onChange={(e) => setBatchValues(e.target.value)}
                     placeholder="Contoh: 1,2,3,4"
-                    className="h-11 w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
+                    disabled={numbers.length === 0}
+                    className="h-11 w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:cursor-not-allowed disabled:opacity-50"
                   />
 
                   <button
                     onClick={handleAddBatchValues}
-                    className="h-11 min-w-[120px] bg-purple-500 hover:bg-purple-600 transition text-white font-medium rounded-xl"
+                    disabled={numbers.length === 0}
+                    className="h-11 min-w-[120px] bg-purple-500 hover:bg-purple-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     Add Batch
                   </button>
                 </div>
               </div>
-            )}
+
+            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
+                Aksi Cepat
+              </label>
+              <div className="flex items-center gap-3 flex-wrap">
+                <button
+                  onClick={handleRandomArray}
+                  className="h-11 min-w-[140px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl"
+                >
+                  Random
+                </button>
+                <button
+                  onClick={handleClearArray}
+                  disabled={numbers.length === 0}
+                  className="h-11 min-w-[140px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  Clear Array
+                </button>
+              </div>
+            </div>
 
             {/* Update Value */}
-            {numbers.length > 0 && (
               <div className="grid grid-cols-[180px_1fr] items-center gap-4">
                 <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
                   Update Value
@@ -233,28 +280,29 @@ const ArrayComponent: React.FC = () => {
                     value={updateIndex}
                     onChange={(e) => setUpdateIndex(e.target.value)}
                     placeholder="Index"
-                    className="h-11 w-28 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    disabled={numbers.length === 0}
+                    className="h-11 w-28 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 disabled:cursor-not-allowed disabled:opacity-50"
                   />
 
                   <input
                     value={updateValueInput}
                     onChange={(e) => setUpdateValueInput(e.target.value)}
                     placeholder="Value baru"
-                    className="h-11 w-32 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                    disabled={numbers.length === 0}
+                    className="h-11 w-32 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 disabled:cursor-not-allowed disabled:opacity-50"
                   />
 
                   <button
                     onClick={handleUpdateValue}
-                    className="h-11 min-w-[120px] bg-yellow-500 hover:bg-yellow-600 transition text-white font-medium rounded-xl"
+                    disabled={numbers.length === 0}
+                    className="h-11 min-w-[120px] bg-yellow-500 hover:bg-yellow-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     Update
                   </button>
                 </div>
               </div>
-            )}
 
             {/* Delete Value */}
-            {numbers.length > 0 && (
               <div className="grid grid-cols-[180px_1fr] items-center gap-4">
                 <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
                   Delete Value
@@ -265,26 +313,21 @@ const ArrayComponent: React.FC = () => {
                     value={deleteIndex}
                     onChange={(e) => setDeleteIndex(e.target.value)}
                     placeholder="Index"
-                    className="h-11 w-28 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-red-400"
+                    disabled={numbers.length === 0}
+                    className="h-11 w-28 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-red-400 disabled:cursor-not-allowed disabled:opacity-50"
                   />
 
                   <button
                     onClick={handleDeleteValue}
-                    className="h-11 min-w-[120px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl"
+                    disabled={numbers.length === 0}
+                    className="h-11 min-w-[120px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     Delete
                   </button>
                 </div>
               </div>
-            )}
 
           </div>
-        </div>
-
-        <div className="p-4"></div>
-
-        <div className="container mx-auto p-4 bg-gray-800 flex flex-col bg-gray-800 rounded-xl mb-8">
-          <h1>Hasil</h1>
         </div>
 
       </div>

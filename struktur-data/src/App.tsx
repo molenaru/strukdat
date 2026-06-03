@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Nav from "./Navbar";
 import Card from "./components/Card";
 import ArrayComponent from "./Array";
+import SortingComponent from "./sorting";
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
         />
         {/* Halaman array */}
         <Route path="/array" element={<ArrayComponent />} />
+        <Route path="/sorting" element={<SortingComponent />} />
       </Routes>
     </div>
   );

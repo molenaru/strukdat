@@ -47,3 +47,8 @@ export function deleteValue(index: number): void {
   numbers.splice(index, 1);
   currentIndex = Math.min(currentIndex, numbers.length);
 }
+
+export function clearArray(): void {
+  numbers = [];
+  currentIndex = 0;
+}
