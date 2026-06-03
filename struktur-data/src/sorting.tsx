@@ -146,7 +146,7 @@ const SortingComponent: React.FC = () => {
 
       <div className="container mx-auto p-4 flex flex-col bg-gray-800 rounded-xl mb-8">
         <h1 className="text-xl font-bold text-black dark:text-white text-start mb-4 mt-0">
-          Sorting Visualizer
+          Visualisasi
         </h1>
 
         <div className="flex gap-2 flex-wrap justify-center pb-8 min-h-[120px]">
@@ -161,7 +161,7 @@ const SortingComponent: React.FC = () => {
                 >
                   {num}
                 </div>
-                <span className="text-white text-sm">{index}</span>
+                <span className="text-white text-xs tracking-wide mt-1">Index {index}</span>
               </div>
             );
           })}
@@ -174,13 +174,13 @@ const SortingComponent: React.FC = () => {
       <div className="container mx-auto p-4 bg-white flex">
         <div className="mx-auto p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700 w-full">
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0 text-start">
-            Konfigurasi Sorting
+            Konfigurasi
           </h1>
 
           <div className="space-y-5">
             <div className="grid grid-cols-[180px_1fr] items-center gap-4">
               <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
-                Add Batch
+                Add
               </label>
               <div className="flex items-center gap-3 flex-wrap">
                 <input
@@ -195,7 +195,7 @@ const SortingComponent: React.FC = () => {
                   disabled={isSorting}
                   className="h-11 min-w-[120px] bg-purple-500 hover:bg-purple-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
                 >
-                  Muat Batch
+                  Add
                 </button>
               </div>
             </div>

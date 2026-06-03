@@ -147,7 +147,7 @@ const ArrayComponent: React.FC = () => {
       <h2 className="text-2xl font-bold mb-4 text-black">Array</h2>
 
       <div className="container mx-auto p-4 flex flex-col bg-gray-800 rounded-xl mb-8 ">
-        <h1 className="text-xl font-bold text-black dark:text-white text-start mb-4 mt-0">Array</h1>
+        <h1 className="text-xl font-bold text-black dark:text-white text-start mb-4 mt-0">Visualisasi</h1>
 
         {/* Tampilan array horizontal */}
         <div className="flex gap-2 flex-wrap justify-center pb-8 min-h-[120px]">
@@ -156,7 +156,7 @@ const ArrayComponent: React.FC = () => {
               <div className="w-12 h-12 border flex items-center justify-center text-black bg-gray-100">
                 {num !== null ? num : ""}
               </div>
-              <span className="text-white text-sm">{index}</span>
+              <span className="text-white text-xs tracking-wide mt-1">Index {index}</span>
             </div>
           ))}
         </div>
@@ -170,7 +170,7 @@ const ArrayComponent: React.FC = () => {
 
           {/* Title */}
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0  text-start">
-            Buat Array
+            Konfigurasi
           </h1>
 
           <div className="space-y-5">
@@ -201,7 +201,7 @@ const ArrayComponent: React.FC = () => {
             {/* Add Value */}
               <div className="grid grid-cols-[180px_1fr] items-center gap-4">
                 <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
-                  Add Value
+                  Add Single Value
                 </label>
 
                 <div className="flex items-center gap-3">
@@ -226,7 +226,7 @@ const ArrayComponent: React.FC = () => {
             {/* Add Batch */}
               <div className="grid grid-cols-[180px_1fr] items-center gap-4">
                 <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
-                  Add Batch
+                  Add Multi Value
                 </label>
 
                 <div className="flex items-center gap-3">
@@ -243,7 +243,7 @@ const ArrayComponent: React.FC = () => {
                     disabled={numbers.length === 0}
                     className="h-11 min-w-[120px] bg-purple-500 hover:bg-purple-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    Add Batch
+                    Add
                   </button>
                 </div>
               </div>
