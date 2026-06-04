@@ -48,9 +48,11 @@ export function dequeue(): void {
   if (rear === 0) {
     throw new Error("Queue kosong!");
   }
-  // remove front element
-  queue.splice(0, 1);
-  // decrease rear (filled count) by one, but not below 0
+  // shift all filled elements one position left and keep the queue size fixed
+  for (let i = 0; i < rear - 1; i++) {
+    queue[i] = queue[i + 1];
+  }
+  queue[rear - 1] = null;
   rear = Math.max(0, rear - 1);
 }
 
@@ -64,7 +66,12 @@ export function dequeueBatch(count: number): void {
   if (count > rear) {
     throw new Error("Jumlah dequeue melebihi elemen di queue!");
   }
-  queue.splice(0, count);
+  for (let i = 0; i < rear - count; i++) {
+    queue[i] = queue[i + count];
+  }
+  for (let i = rear - count; i < rear; i++) {
+    queue[i] = null;
+  }
   rear = Math.max(0, rear - count);
 }
 

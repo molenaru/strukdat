@@ -31,7 +31,7 @@ export function pop(): void {
   if (top === 0) {
     throw new Error('Stack kosong!');
   }
-  stack.splice(top - 1, 1);
+  stack[top - 1] = null;
   top = Math.max(0, top - 1);
 }
 
