@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { createQueue, getQueue, enqueue, dequeue, clearQueue } from './backend/queue';
+import { createQueue, getQueue, enqueue, dequeue, removeAt, clearQueue } from './backend/queue';
 
 const QueueComponent: React.FC = () => {
   const [numbers, setNumbers] = useState<number[]>([]);
@@ -8,7 +8,9 @@ const QueueComponent: React.FC = () => {
   const [error, setError] = useState('');
   const [closing, setClosing] = useState(false);
   const [addingIndices, setAddingIndices] = useState<number[]>([]);
-  const [removing, setRemoving] = useState(false);
+  const [removingIndex, setRemovingIndex] = useState<number | null>(null);
+  const [priorityInput, setPriorityInput] = useState('0');
+  const [markedPriorityIndex, setMarkedPriorityIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (error) {
@@ -23,7 +25,22 @@ const QueueComponent: React.FC = () => {
     }
   }, [error]);
 
-  const refresh = () => setNumbers(getQueue().filter((v) => v != null) as number[]);
+  const refresh = () => {
+    const newNumbers = getQueue().filter((v) => v != null) as number[];
+    setNumbers(newNumbers);
+    if (newNumbers.length === 0) {
+      setPriorityInput('0');
+      setMarkedPriorityIndex(null);
+    } else {
+      const parsedPriority = Number(priorityInput);
+      if (!Number.isInteger(parsedPriority) || parsedPriority < 0 || parsedPriority >= newNumbers.length) {
+        setPriorityInput('0');
+      }
+      if (markedPriorityIndex !== null && markedPriorityIndex >= newNumbers.length) {
+        setMarkedPriorityIndex(null);
+      }
+    }
+  };
 
   const handleEnqueue = () => {
     // generate random value on enqueue
@@ -49,21 +66,27 @@ const QueueComponent: React.FC = () => {
 
   const handleDequeue = () => {
     try {
-      // animate front element out, then actually dequeue
       if (numbers.length === 0) {
         setError('Queue kosong!');
         return;
       }
-      setRemoving(true);
+      const removeIndex = markedPriorityIndex !== null && markedPriorityIndex >= 0 && markedPriorityIndex < numbers.length
+        ? markedPriorityIndex
+        : 0;
+      setRemovingIndex(removeIndex);
       setTimeout(() => {
         try {
-          dequeue();
-          // refresh to only occupied slots so box disappears
+          if (markedPriorityIndex !== null && markedPriorityIndex >= 0 && markedPriorityIndex < numbers.length) {
+            removeAt(markedPriorityIndex);
+            setMarkedPriorityIndex(null);
+          } else {
+            dequeue();
+          }
           refresh();
         } catch (err: any) {
           setError(err.message);
         } finally {
-          setRemoving(false);
+          setRemovingIndex(null);
         }
       }, 350);
       setError('');
@@ -79,6 +102,27 @@ const QueueComponent: React.FC = () => {
   const handleClear = () => {
     clearQueue();
     refresh();
+    setError('');
+    setPriorityInput('0');
+    setMarkedPriorityIndex(null);
+  };
+
+  const handleMarkPriority = () => {
+    if (numbers.length === 0) {
+      setError('Queue kosong!');
+      return;
+    }
+    const selectedIndex = Number(priorityInput);
+    if (priorityInput.trim() === '' || !Number.isInteger(selectedIndex) || selectedIndex < 0 || selectedIndex >= numbers.length) {
+      setError(`Index harus angka antara 0 dan ${Math.max(numbers.length - 1, 0)}`);
+      return;
+    }
+    setMarkedPriorityIndex(selectedIndex);
+    setError('');
+  };
+
+  const handleClearPriorityMark = () => {
+    setMarkedPriorityIndex(null);
     setError('');
   };
 
@@ -102,10 +146,11 @@ const QueueComponent: React.FC = () => {
 
         <div className="flex gap-2 flex-wrap justify-center pb-8 min-h-[120px]">
           {numbers.map((num, index) => {
-            const base = 'w-12 h-12 border flex items-center justify-center text-black bg-gray-100 relative';
+            const base = 'w-12 h-12 border flex items-center justify-center text-black relative';
             const isAdding = addingIndices.includes(index);
-            const isRemoving = removing && index === 0;
-            const classes = `${base} ${isAdding ? 'enqueue-in' : ''} ${isRemoving ? 'dequeue-out' : ''}`;
+            const isPriority = index === markedPriorityIndex;
+            const isRemoving = removingIndex !== null && index === removingIndex;
+            const classes = `${base} ${isAdding ? 'enqueue-in' : ''} ${isPriority ? 'bg-purple-500 border-purple-700 shadow-lg text-white' : 'bg-gray-100'} ${isRemoving ? 'dequeue-out' : ''}`;
             const isFront = index === 0;
             const isRear = index === numbers.length - 1;
             let label: string | null = null;
@@ -118,7 +163,10 @@ const QueueComponent: React.FC = () => {
               label = 'Belakang';
             }
             return (
-              <div key={index} className="flex flex-col items-center">
+              <div key={index} className="flex flex-col items-center relative">
+                {isPriority && (
+                  <span className="mb-1 text-xs font-semibold text-purple-700">Priority</span>
+                )}
                 <div className={classes}>
                   {label && <span className={labelClass}>{label}</span>}
                   <span className="text-black font-semibold">{num}</span>
@@ -145,6 +193,39 @@ const QueueComponent: React.FC = () => {
             </div>
 
             {/* enqueue batch dihapus; gunakan Random atau Enqueue single */}
+
+            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">Pilih Index Priority</label>
+              <div className="flex flex-col sm:flex-row items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    min={0}
+                    max={Math.max(numbers.length - 1, 0)}
+                    value={priorityInput}
+                    onChange={(e) => setPriorityInput(e.target.value)}
+                    disabled={numbers.length === 0}
+                    className="h-11 w-24 px-3 border rounded-xl text-black bg-white"
+                    placeholder="Index"
+                  />
+                  <span className="text-sm text-gray-500">max {Math.max(numbers.length - 1, 0)}</span>
+                </div>
+                <button
+                  onClick={handleMarkPriority}
+                  disabled={numbers.length === 0}
+                  className="h-11 min-w-[140px] bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:text-gray-600 transition text-white font-medium rounded-xl"
+                >
+                  OK
+                </button>
+                <button
+                  onClick={handleClearPriorityMark}
+                  disabled={markedPriorityIndex === null}
+                  className="h-11 min-w-[140px] bg-purple-500 hover:bg-purple-600 disabled:bg-gray-300 disabled:text-gray-600 transition text-white font-medium rounded-xl"
+                >
+                  Hapus Tanda
+                </button>
+              </div>
+            </div>
 
             <div className="grid grid-cols-[180px_1fr] items-center gap-4">
               <label className="text-start font-semibold text-gray-700 dark:text-gray-200">Aksi Cepat</label>

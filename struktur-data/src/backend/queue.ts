@@ -75,6 +75,23 @@ export function dequeueBatch(count: number): void {
   rear = Math.max(0, rear - count);
 }
 
+export function removeAt(index: number): void {
+  if (queue.length === 0) {
+    throw new Error("Queue belum dibuat!");
+  }
+  if (rear === 0) {
+    throw new Error("Queue kosong!");
+  }
+  if (index < 0 || index >= rear) {
+    throw new Error(`Index harus antara 0 dan ${rear - 1}`);
+  }
+  for (let i = index; i < rear - 1; i++) {
+    queue[i] = queue[i + 1];
+  }
+  queue[rear - 1] = null;
+  rear = Math.max(0, rear - 1);
+}
+
 export function clearQueue(): void {
   queue = [];
   rear = 0;
