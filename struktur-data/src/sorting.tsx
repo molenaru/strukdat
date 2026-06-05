@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   createArray,
   getNumbers,
   addBatchValues,
   clearArray,
-  sortNumbers,
   getSortSteps,
 } from "./backend/sorting";
-import type { SortStep } from "./backend/sorting";
+import type { SortStep, SortItem } from "./backend/sorting"; // Pastikan SortItem di-import
 
 const SortingComponent: React.FC = () => {
-  const [numbers, setNumbers] = useState<(number | null)[]>([]);
+  // 1. Ubah state numbers agar menyimpan objek SortItem murni dari backend, bukan hanya angka!
+  const [numbers, setNumbers] = useState<SortItem[]>([]);
   const [batchValues, setBatchValues] = useState("");
   const [algorithm, setAlgorithm] = useState<"bubble" | "selection" | "insertion">("bubble");
   const [direction, setDirection] = useState<"asc" | "desc">("asc");
@@ -34,6 +35,7 @@ const SortingComponent: React.FC = () => {
     }
   }, [error]);
 
+  // Ambil objek utuh dari backend
   const refreshNumbers = () => setNumbers(getNumbers());
 
   const generateRandomArray = () => {
@@ -49,34 +51,31 @@ const SortingComponent: React.FC = () => {
     generateRandomArray();
   }, []);
 
-  const visibleNumbers = isSorting && steps.length > 0 ? steps[activeStep].array : numbers.map((item) => item ?? "");
+  // 2. KUNCI UTAMA: visibleNumbers sekarang dijamin memiliki ID yang stabil dari backend
+  const visibleNumbers: SortItem[] =
+    steps.length > 0
+      ? steps[Math.min(activeStep, steps.length - 1)].array
+      : numbers;
+
   const activeIndices = isSorting && steps.length > 0 ? steps[activeStep].activeIndices : [];
   const currentMessage = isSorting && steps.length > 0 ? steps[activeStep].message : "";
 
   useEffect(() => {
-    if (!isSorting || steps.length === 0) {
-      return;
-    }
+    if (!isSorting || steps.length === 0) return;
 
-    const interval = window.setInterval(() => {
-      setActiveStep((prevStep) => {
-        if (prevStep >= steps.length - 1) {
-          window.clearInterval(interval);
+    const interval = setInterval(() => {
+      setActiveStep((prev) => {
+        if (prev >= steps.length - 1) {
+          clearInterval(interval);
           setIsSorting(false);
-          try {
-            sortNumbers(algorithm, direction);
-            refreshNumbers();
-          } catch (err: any) {
-            setError(err.message);
-          }
-          return prevStep;
+          return prev;
         }
-        return prevStep + 1;
+        return prev + 1;
       });
     }, speed);
 
-    return () => window.clearInterval(interval);
-  }, [isSorting, steps, algorithm, direction, speed]);
+    return () => clearInterval(interval);
+  }, [isSorting, steps, speed]);
 
   const handleLoadBatchValues = () => {
     try {
@@ -89,7 +88,6 @@ const SortingComponent: React.FC = () => {
         setError("Format batch harus angka yang dipisah koma!");
         return;
       }
-
       if (values.length > 20) {
         setError("Batch hanya boleh berisi maksimal 20 angka!");
         return;
@@ -104,20 +102,17 @@ const SortingComponent: React.FC = () => {
       setError(err.message);
     }
     setSteps([]);
+    setActiveStep(0);
   };
 
   const handleRandomArray = () => {
     try {
-      const size = Math.floor(Math.random() * 19) + 2;
-      const values = Array.from({ length: size }, () => Math.floor(Math.random() * 99) + 1);
-      createArray(size);
-      addBatchValues(values);
-      refreshNumbers();
-      setError("");
+      generateRandomArray();
     } catch (err: any) {
       setError(err.message);
     }
     setSteps([]);
+    setActiveStep(0);
   };
 
   const handleClearArray = () => {
@@ -126,13 +121,25 @@ const SortingComponent: React.FC = () => {
     setBatchValues("");
     setError("");
     setSteps([]);
+    setActiveStep(0);
   };
 
+  // 3. FUNGSI SORT CLEAN & RESET
   const handleSort = () => {
+    if (numbers.length === 0) return;
+
     try {
+      // Ambil data langkah baru berdasarkan kondisi state backend saat ini
       const newSteps = getSortSteps(algorithm, direction);
-      setSteps(newSteps);
+
+      if (newSteps.length <= 1) {
+        setError("Array sudah terurut!");
+        return;
+      }
+
+      // Reset step dulu ke 0 sebelum memulai jalannya interval baru
       setActiveStep(0);
+      setSteps(newSteps);
       setIsSorting(true);
       setError("");
     } catch (err: any) {
@@ -140,125 +147,181 @@ const SortingComponent: React.FC = () => {
     }
   };
 
-  return (
-    <div className="bg-white min-h-screen p-6">
-      <h2 className="text-2xl font-bold mb-4 text-black">Sorting</h2>
+  const maxValue = Math.max(...visibleNumbers.map((item) => item.value), 1);
 
-      <div className="container mx-auto p-4 flex flex-col bg-gray-800 rounded-xl mb-8">
-        <h1 className="text-xl font-bold text-black dark:text-white text-start mb-4 mt-0">
+  return (
+    <div className="min-h-screen p-6">
+      <div className="flex justify-center flex-col sm:flex-row p-5 pt-0 gap-5">
+        <div className="text-left outline outline-2 rounded-xl p-6 shadow-lg">
+          <div className="text-xl font-medium text-[#FE4020]">
+            Sorting
+          </div>
+          <p className="text-justify mt-2">
+            Sorting bukanlah wadah penyimpanan data (struktur data), melainkan sebuah algoritma atau prosedur langkah-demi-langkah untuk menyusun kembali elemen-elemen di dalam suatu struktur data (seperti Array) ke dalam urutan tertentu baik secara urutan naik (ascending, dari kecil ke besar) maupun urutan turun (descending, dari besar ke kecil).</p>
+
+        </div>
+
+        <div className="text-left outline outline-2 rounded-xl p-6 shadow-lg">
+          <div className="text-xl font-medium text-[#FE4020]">
+            Analogi
+          </div>
+          <p className="text-justify mt-2">
+           Algoritma pengurutan paling sederhana (BubbleSort) yang bekerja dengan cara membandingkan dua elemen yang bersebelahan, lalu menukar posisinya jika urutannya salah. Proses ini diulang terus-menerus sampai seluruh data rapi. Elemen terbesar akan perlahan "mengapung" ke posisi akhir seperti gelembung udara di dalam air.
+           </p>
+        </div>
+      </div>
+
+
+
+      <div className="m-5 mt-0 p-4 flex outline outline-2 flex-col rounded-xl mb-8">
+        <h1 className="text-xl font-bold text-start mb-4 mt-0">
           Visualisasi
         </h1>
 
         <div className="flex gap-2 flex-wrap justify-center pb-8 min-h-[120px]">
-          {visibleNumbers.map((num, index) => {
-            const isActive = activeIndices.includes(index);
-            return (
-              <div key={index} className="flex flex-col items-center">
-                <div
-                  className={`w-12 h-12 border flex items-center justify-center text-black bg-gray-100 transition duration-300 ${
-                    isActive ? "border-2 border-blue-500 bg-blue-100" : ""
-                  }`}
+          <AnimatePresence initial={false}>
+            {visibleNumbers.map((item, index) => {
+              const isActive = activeIndices.includes(index);
+
+              return (
+                <motion.div
+                  key={item.id} // <--- SEKARANG DIJAMIN STABIL DAN UNIK TERUS MEMBAWA ID ASLI
+                  layout="position"
+                  transition={{
+                    layout: { duration: 0.4 },
+                  }}
+                  className="flex flex-col items-center justify-end"
                 >
-                  {num}
-                </div>
-                <span className="text-white text-xs tracking-wide mt-1">Index {index}</span>
-              </div>
-            );
-          })}
+                  <span className="text-xs font-semibold mb-1">
+                    {item.value}
+                  </span>
+
+                  <motion.div
+                    animate={{
+                      height: Math.max((item.value / maxValue) * 180, 40),
+                    }}
+                    transition={{ duration: 0.3 }}
+                    className={`w-12 border flex items-center justify-center ${isActive ? "bg-blue-400 border-blue-600" : "bg-gray-200 border-gray-400"
+                      }`}
+                  />
+
+                  <span className="text-xs mt-1">{index}</span>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
         {currentMessage && (
-          <p className="text-sm text-blue-200 text-center mt-2">{currentMessage}</p>
+          <p className="text-md text-blue-400 text-center mt-2">{currentMessage}</p>
         )}
       </div>
 
-      <div className="container mx-auto p-4 bg-white flex">
-        <div className="mx-auto p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700 w-full">
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0 text-start">
+      <div className="m-5 p-4">
+        <div className="p-4 sm:p-6 rounded-xl bg-[#213448] shadow-lg mb-8 outline outline-2 w-full">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0 text-start">
             Konfigurasi
           </h1>
 
           <div className="space-y-5">
-            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
+            {/* Add */}
+            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] lg:grid-cols-[180px_1fr] items-center gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 text-sm sm:text-base">
                 Add
               </label>
-              <div className="flex items-center gap-3 flex-wrap">
+
+              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                 <input
                   value={batchValues}
                   onChange={(e) => setBatchValues(e.target.value)}
                   placeholder="Contoh: 1,2,3,4"
                   disabled={isSorting}
-                  className="h-11 w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="h-10 sm:h-11 w-40 sm:w-52 md:w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-3 sm:px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:cursor-not-allowed disabled:opacity-50"
                 />
+
                 <button
                   onClick={handleLoadBatchValues}
                   disabled={isSorting}
-                  className="h-11 min-w-[120px] bg-purple-500 hover:bg-purple-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
+                  className="h-10 sm:h-11 px-4 sm:px-6 bg-purple-500 hover:bg-purple-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   Add
                 </button>
               </div>
             </div>
 
-            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
+            {/* Aksi Cepat */}
+            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] lg:grid-cols-[180px_1fr] items-center gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 text-sm sm:text-base">
                 Aksi Cepat
               </label>
-              <div className="flex items-center gap-3 flex-wrap">
+
+              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                 <button
                   onClick={handleRandomArray}
                   disabled={isSorting}
-                  className="h-11 min-w-[140px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
+                  className="h-10 sm:h-11 px-4 sm:px-6 bg-blue-500 hover:bg-blue-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   Random
                 </button>
+
                 <button
                   onClick={handleClearArray}
                   disabled={isSorting || numbers.length === 0}
-                  className="h-11 min-w-[140px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
+                  className="h-10 sm:h-11 px-4 sm:px-6 bg-red-500 hover:bg-red-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   Clear Array
                 </button>
               </div>
             </div>
 
-            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
+            {/* Pilih Algoritma */}
+            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] lg:grid-cols-[180px_1fr] items-center gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 text-sm sm:text-base">
                 Pilih Algoritma
               </label>
-              <div className="flex items-center gap-3 flex-wrap">
+
+              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                 <select
                   value={algorithm}
-                  onChange={(e) => setAlgorithm(e.target.value as "bubble" | "selection" | "insertion")}
-                  className="h-11 w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  onChange={(e) =>
+                    setAlgorithm(
+                      e.target.value as "bubble" | "selection" | "insertion"
+                    )
+                  }
+                  className="h-10 text-sm sm:h-11 w-36 sm:w-44 md:w-56 border border-gray-300 dark:border-gray-600 rounded-xl px-3 sm:px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 >
                   <option value="bubble">Bubble Sort</option>
                   <option value="selection">Selection Sort</option>
                   <option value="insertion">Insertion Sort</option>
                 </select>
+
                 <select
                   value={direction}
-                  onChange={(e) => setDirection(e.target.value as "asc" | "desc")}
-                  className="h-11 w-40 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  onChange={(e) =>
+                    setDirection(e.target.value as "asc" | "desc")
+                  }
+                  className="h-10 text-sm sm:h-11 w-28 sm:w-36 border border-gray-300 dark:border-gray-600 rounded-xl px-3 sm:px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 >
                   <option value="asc">Ascending</option>
                   <option value="desc">Descending</option>
                 </select>
+
                 <button
                   onClick={handleSort}
                   disabled={isSorting || numbers.length === 0}
-                  className="h-11 min-w-[120px] bg-slate-900 hover:bg-black transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
+                  className="h-10 sm:h-11 px-4 sm:px-6 bg-indigo-500 hover:bg-indigo-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isSorting ? "Sorting..." : "Sort"}
                 </button>
               </div>
             </div>
 
-            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
+            {/* Kecepatan */}
+            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] lg:grid-cols-[180px_1fr] items-center gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 text-sm sm:text-base pb-2">
                 Kecepatan
               </label>
-              <div className="flex items-center gap-3">
+
+              <div className="flex items-center gap-3 flex-wrap">
                 <input
                   type="range"
                   min={100}
@@ -266,19 +329,27 @@ const SortingComponent: React.FC = () => {
                   value={speed}
                   disabled={isSorting}
                   onChange={(e) => setSpeed(Number(e.target.value))}
-                  className="w-64"
+                  className="w-32 sm:w-48 md:w-56 lg:w-64"
                 />
-                <span className="text-gray-700 dark:text-gray-200">{speed} ms</span>
+
+                <span className="text-sm sm:text-base text-gray-700 dark:text-gray-200">
+                  {speed} ms
+                </span>
               </div>
             </div>
           </div>
 
+          {/* Error Popup */}
           {error && (
             <div
-              className={`fixed top-5 right-5 z-50 ${closing ? "animate-slide-out" : "animate-slide-in"}`}
+              className={`fixed top-5 right-2 sm:right-5 z-50 ${closing ? "animate-slide-out" : "animate-slide-in"
+                }`}
             >
-              <div className="bg-red-500 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 min-w-[300px] ">
-                <p className="flex-1">{error}</p>
+              <div className="bg-red-500 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 min-w-[250px] sm:min-w-[300px] max-w-[90vw]">
+                <p className="flex-1 text-sm sm:text-base break-words">
+                  {error}
+                </p>
+
                 <button
                   onClick={() => setError("")}
                   className="font-bold hover:opacity-70"
@@ -290,6 +361,7 @@ const SortingComponent: React.FC = () => {
           )}
         </div>
       </div>
+
     </div>
   );
 };

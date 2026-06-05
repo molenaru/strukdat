@@ -81,26 +81,50 @@ const StackComponent: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen p-6">
-      <h2 className="text-2xl font-bold mb-4 text-black">Stack</h2>
+    <div className="min-h-screen p-6">
+      <div className="flex justify-center flex-col sm:flex-row p-5 pt-0 gap-5">
+        <div className="text-left outline outline-2 rounded-xl p-6 shadow-lg">
+          <div className="text-xl font-medium text-[#FE4020]">
+            Stack
+          </div>
+          <p className="text-justify mt-2">
+            Berkebalikan dengan Queue, Stack adalah struktur data linear yang menerapkan prinsip LIFO (Last In, First Out). Elemen yang paling terakhir dimasukkan ke dalam tumpukan justru akan menjadi elemen yang pertama kali dikeluarkan.</p>
 
-      <div className="container mx-auto p-4 flex flex-col bg-gray-800 rounded-xl mb-8">
-        <h1 className="text-xl font-bold text-black dark:text-white text-start mb-4 mt-0">Visualisasi</h1>
+        </div>
 
-        <div className="flex gap-2 flex-wrap justify-center pb-8 min-h-[120px]">
+        <div className="text-left outline outline-2 rounded-xl p-6 shadow-lg">
+          <div className="text-xl font-medium text-[#FE4020]">
+            Analogi
+          </div>
+          <p className="text-justify mt-2">
+            Bayangkan sebuah tumpukan piring di atas meja makan atau tumpukan buku di dalam kardus sempit. Anda hanya bisa meletakkan piring baru di posisi paling atas, dan jika ingin mengambil piring, Anda wajib mengambil piring yang berada di posisi paling atas terlebih dahulu agar tumpukan di bawahnya tidak roboh.
+          </p>
+        </div>
+      </div>
+
+      <div className="m-5 mt-0 mb-0 p-4 flex flex-col outline outline-2 rounded-xl shrink-0 mb-8 h-[320px]">
+        <h1 className="text-xl font-bold text-start mb-4 mt-0">Visualisasi</h1>
+
+        <div className="mt-auto" />
+
+        <div className="flex flex-col-reverse gap-2 items-center w-full overflow-y-auto pr-2 scrollbar-thin">
           {numbers.map((num, index) => {
-            const base = 'w-12 h-12 border flex items-center justify-center text-black bg-gray-100 relative';
+            const base = 'w-9 h-9 border flex items-center justify-center text-black bg-gray-100 relative shrink-0';
             const isAdding = addingIndices.includes(index);
             const isRemoving = removing && index === numbers.length - 1;
             const classes = `${base} ${isAdding ? 'enqueue-in' : ''} ${isRemoving ? 'dequeue-out' : ''}`;
             const isTop = index === numbers.length - 1;
+
             let label: string | null = null;
-            let labelClass = 'absolute left-1/2 -top-5 -translate-x-1/2 text-xs text-blue-200';
+            // KANAN TENGAH: Menggunakan utility dari request kamu sebelumnya agar label 'Top' rapi di sebelah kanan kotak
+            let labelClass = 'absolute left-12 top-1/2 -translate-y-1/2 text-xs text-blue-400 whitespace-nowrap';
+
             if (isTop) {
               label = 'Top';
             }
+
             return (
-              <div key={index} className="flex flex-col items-center">
+              <div key={index} className="flex flex-col items-center relative w-full max-w-[150px]">
                 <div className={classes}>
                   {label && <span className={labelClass}>{label}</span>}
                   <span className="text-black font-semibold">{num}</span>
@@ -111,32 +135,57 @@ const StackComponent: React.FC = () => {
         </div>
       </div>
 
-      <div className="container mx-auto p-4 bg-white flex">
-        <div className="mx-auto p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700 w-full">
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0 text-start">Konfigurasi</h1>
+      <div className="m-5 p-4flex">
+        <div className="mx-auto p-4 md:p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700 w-full box-border">
+          {/* Title */}
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0 text-start">
+            Konfigurasi
+          </h1>
 
           <div className="space-y-5">
-            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">Opsi</label>
-              <div className="flex items-center gap-3">
-                <button onClick={handlePush} className="h-11 min-w-[120px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl">Push</button>
-                <button onClick={handlePop} className="h-11 min-w-[120px] bg-yellow-500 hover:bg-yellow-600 transition text-black font-medium rounded-xl">Pop</button>
+            {/* Opsi (Push / Pop) */}
+            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] items-start md:items-center gap-2 md:gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 pt-1 md:pt-0">
+                Opsi
+              </label>
+              <div className="flex flex-row items-center gap-3 w-full">
+                <button
+                  onClick={handlePush}
+                  className="h-11 flex-1 md:flex-none md:min-w-[120px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl shrink-0"
+                >
+                  Push
+                </button>
+                <button
+                  onClick={handlePop}
+                  className="h-11 flex-1 md:flex-none md:min-w-[120px] bg-yellow-500 hover:bg-yellow-600 transition text-black font-medium rounded-xl shrink-0"
+                >
+                  Pop
+                </button>
               </div>
             </div>
 
-            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">Aksi Cepat</label>
-              <div className="flex items-center gap-3">
-                <button onClick={handleClear} className="h-11 min-w-[140px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl">Clear</button>
+            {/* Aksi Cepat */}
+            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] items-start md:items-center gap-2 md:gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 pt-1 md:pt-0">
+                Aksi Cepat
+              </label>
+              <div className="flex items-center gap-3 w-full">
+                <button
+                  onClick={handleClear}
+                  className="h-11 flex-1 md:flex-none md:min-w-[140px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl"
+                >
+                  Clear
+                </button>
               </div>
             </div>
           </div>
 
+          {/* Error Toast Notification */}
           {error && (
             <div className={`fixed top-5 right-5 z-50 ${closing ? 'animate-slide-out' : 'animate-slide-in'}`}>
-              <div className="bg-red-500 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 min-w-[300px] ">
-                <p className="flex-1">{error}</p>
-                <button onClick={() => setError('')} className="font-bold hover:opacity-70">✕</button>
+              <div className="bg-red-500 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 min-w-[280px] sm:min-w-[300px]">
+                <p className="text-sm flex-1">{error}</p>
+                <button onClick={() => setError('')} className="font-bold hover:opacity-70 text-sm">✕</button>
               </div>
             </div>
           )}

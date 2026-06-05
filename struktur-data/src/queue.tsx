@@ -138,15 +138,36 @@ const QueueComponent: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen p-6">
-      <h2 className="text-2xl font-bold mb-4 text-black">Queue</h2>
+    <div className="min-h-screen p-6">
+      <div className="flex justify-center flex-col sm:flex-row p-5 pt-0 gap-5">
+        <div className="text-left outline outline-2 rounded-xl p-6 shadow-lg">
+          <div className="text-xl font-medium text-[#FE4020]">
+            Queue
+          </div>
+          <p className="text-justify mt-2">
+            Queue adalah struktur data linear yang menerapkan prinsip FIFO (First In, First Out). Artinya, elemen yang pertama kali dimasukkan ke dalam antrean akan menjadi elemen yang pertama kali dikeluarkan.
+          </p>
 
-      <div className="container mx-auto p-4 flex flex-col bg-gray-800 rounded-xl mb-8">
-        <h1 className="text-xl font-bold text-black dark:text-white text-start mb-4 mt-0">Visualisasi</h1>
+        </div>
 
-        <div className="flex gap-2 flex-wrap justify-center pb-8 min-h-[120px]">
+        <div className="text-left outline outline-2 rounded-xl p-6 shadow-lg">
+          <div className="text-xl font-medium text-[#FE4020]">
+            Analogi
+          </div>
+          <p className="text-justify mt-2">
+            Persis seperti antrean pembeli di kasir supermarket atau antrean tiket bioskop. Orang yang datang paling awal akan dilayani pertama kali, sementara orang yang baru datang harus berdiri di barisan paling belakang (Rear/Tail) dan menunggu hingga giliran depannya selesai.
+          </p>
+        </div>
+      </div>
+
+     <div className="m-5 mt-0 mb-0 p-4 flex flex-col outline outline-2 rounded-xl shrink-0 mb-8 h-[320px]">
+        <h1 className="text-xl font-bold text-start mb-4 mt-0">Visualisasi</h1>
+        <h1 className="text-xl text-center align-middle mb-4 mt-0">Kasir</h1>
+
+        {/* Tambahkan max-h-[300px] (bisa disesuaikan) dan overflow-y-auto */}
+        <div className="flex gap-2 justify-start items-center flex-col pb-8 min-h-[120px] max-h-[350px] overflow-y-auto pr-2 scrollbar-thin">
           {numbers.map((num, index) => {
-            const base = 'w-12 h-12 border flex items-center justify-center text-black relative';
+            const base = 'w-9 h-9 border flex items-center justify-center relative shrink-0'; // Tambahkan shrink-0 agar kotak tidak gepeng saat di-scroll
             const isAdding = addingIndices.includes(index);
             const isPriority = index === markedPriorityIndex;
             const isRemoving = removingIndex !== null && index === removingIndex;
@@ -154,7 +175,8 @@ const QueueComponent: React.FC = () => {
             const isFront = index === 0;
             const isRear = index === numbers.length - 1;
             let label: string | null = null;
-            let labelClass = 'absolute left-1/2 -top-5 -translate-x-1/2 text-xs text-blue-200';
+            let labelClass = 'p-2 absolute left-12 top-1/2 -translate-y-1/2 text-xs text-blue-400 whitespace-nowrap'; // Tambahkan whitespace-nowrap agar teks label tidak patah dua baris
+
             if (isFront && isRear) {
               label = 'Keduanya';
             } else if (isFront) {
@@ -162,8 +184,9 @@ const QueueComponent: React.FC = () => {
             } else if (isRear) {
               label = 'Belakang';
             }
+
             return (
-              <div key={index} className="flex flex-col items-center relative">
+              <div key={index} className="flex flex-col items-center relative w-full max-w-[150px]">
                 {isPriority && (
                   <span className="mb-1 text-xs font-semibold text-purple-700">Priority</span>
                 )}
@@ -177,26 +200,45 @@ const QueueComponent: React.FC = () => {
         </div>
       </div>
 
-      <div className="container mx-auto p-4 bg-white flex">
-        <div className="mx-auto p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700 w-full">
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0 text-start">Konfigurasi</h1>
+      <div className="p-4 flex">
+        <div className="m-2 mt-0 p-4 md:m-5 md:p-6 bg-[#213448] rounded-2xl shadow-lg mb-8 outline outline-2 w-full">
+          {/* Title */}
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0 text-start">
+            Konfigurasi
+          </h1>
 
           <div className="space-y-5">
             {/* queue dibuat otomatis, tombol buat dihapus */}
 
-            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">Opsi</label>
-              <div className="flex items-center gap-3">
-                <button onClick={handleEnqueue} className="h-11 min-w-[120px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl">Push</button>
-                <button onClick={handleDequeue} className="h-11 min-w-[120px] bg-yellow-500 hover:bg-yellow-600 transition text-black font-medium rounded-xl">Pop</button>
+            {/* Opsi (Push / Pop) */}
+            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] items-start md:items-center gap-2 md:gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 pt-1 md:pt-0">
+                Opsi
+              </label>
+              <div className="flex items-center gap-3 w-full">
+                <button
+                  onClick={handleEnqueue}
+                  className="h-11 flex-1 md:flex-none md:min-w-[120px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl"
+                >
+                  Push
+                </button>
+                <button
+                  onClick={handleDequeue}
+                  className="h-11 flex-1 md:flex-none md:min-w-[120px] bg-yellow-500 hover:bg-yellow-600 transition text-black font-medium rounded-xl"
+                >
+                  Pop
+                </button>
               </div>
             </div>
 
             {/* enqueue batch dihapus; gunakan Random atau Enqueue single */}
 
-            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">Pilih Index Priority</label>
-              <div className="flex flex-col sm:flex-row items-center gap-3">
+            {/* Pilih Index Priority */}
+            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] items-start md:items-center gap-2 md:gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 pt-1 md:pt-0">
+                Pilih Index Priority
+              </label>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
                 <div className="flex items-center gap-2">
                   <input
                     type="number"
@@ -205,44 +247,59 @@ const QueueComponent: React.FC = () => {
                     value={priorityInput}
                     onChange={(e) => setPriorityInput(e.target.value)}
                     disabled={numbers.length === 0}
-                    className="h-11 w-24 px-3 border rounded-xl text-black bg-white"
+                    className="h-11 w-24 px-3 border border-gray-300 dark:border-gray-600 rounded-xl text-black bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50 shrink-0"
                     placeholder="Index"
                   />
-                  <span className="text-sm text-gray-500">max {Math.max(numbers.length - 1, 0)}</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                    max {Math.max(numbers.length - 1, 0)}
+                  </span>
                 </div>
-                <button
-                  onClick={handleMarkPriority}
-                  disabled={numbers.length === 0}
-                  className="h-11 min-w-[140px] bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 disabled:text-gray-600 transition text-white font-medium rounded-xl"
-                >
-                  OK
-                </button>
-                <button
-                  onClick={handleClearPriorityMark}
-                  disabled={markedPriorityIndex === null}
-                  className="h-11 min-w-[140px] bg-purple-500 hover:bg-purple-600 disabled:bg-gray-300 disabled:text-gray-600 transition text-white font-medium rounded-xl"
-                >
-                  Hapus Tanda
-                </button>
+
+                <div className="flex flex-row gap-3 w-full sm:w-auto">
+                  <button
+                    onClick={handleMarkPriority}
+                    disabled={numbers.length === 0}
+                    className="h-11 flex-1 sm:flex-none sm:min-w-[140px] bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:text-gray-600 dark:disabled:text-gray-400 transition text-white font-medium rounded-xl"
+                  >
+                    OK
+                  </button>
+                  <button
+                    onClick={handleClearPriorityMark}
+                    disabled={markedPriorityIndex === null}
+                    className="h-11 flex-1 sm:flex-none sm:min-w-[140px] bg-purple-500 hover:bg-purple-600 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:text-gray-600 dark:disabled:text-gray-400 transition text-white font-medium rounded-xl"
+                  >
+                    Hapus Tanda
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">Aksi Cepat</label>
-              <div className="flex items-center gap-3">
-                {/* Enqueue adds a random number; clear remains here */}
-                <button onClick={handleClear} className="h-11 min-w-[140px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl">Clear</button>
+            {/* Aksi Cepat */}
+            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] items-start md:items-center gap-2 md:gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 pt-1 md:pt-0">
+                Aksi Cepat
+              </label>
+              <div className="flex items-center gap-3 w-full">
+                <button
+                  onClick={handleClear}
+                  className="h-11 flex-1 md:flex-none md:min-w-[140px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl"
+                >
+                  Clear
+                </button>
               </div>
             </div>
 
           </div>
 
-          {error && (<div className={`fixed top-5 right-5 z-50 ${closing ? 'animate-slide-out' : 'animate-slide-in'}`}>
-            <div className="bg-red-500 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 min-w-[300px] ">
-              <p className="flex-1">{error}</p>
-              <button onClick={() => setError('')} className="font-bold hover:opacity-70">✕</button>
+          {/* Error Toast Notification */}
+          {error && (
+            <div className={`fixed top-5 right-5 z-50 ${closing ? 'animate-slide-out' : 'animate-slide-in'}`}>
+              <div className="bg-red-500 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 min-w-[280px] sm:min-w-[300px]">
+                <p className="text-sm flex-1">{error}</p>
+                <button onClick={() => setError('')} className="font-bold hover:opacity-70 text-sm">✕</button>
+              </div>
             </div>
-          </div>)}
+          )}
         </div>
       </div>
     </div>

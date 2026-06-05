@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Nav from "./Navbar";
+import Footer from "./Footer";
 import Card from "./components/Card";
 import ArrayComponent from "./Array";
 import SortingComponent from "./sorting";
@@ -21,7 +22,7 @@ function App() {
               {/* <img src="/logo.png" className="h-60 mx-auto items-center p-0 m-0"  alt="" /> */}
               {/* title */}
               <div className="m-5 items-center
-               flex items-center rounded-xl p-6 shadow-lg outline outline-2 mt-10">
+               flex rounded-xl p-6 shadow-lg outline outline-2 mt-10">
                 <div className="text-left">
                   <div className="text-xl font-medium text-[#3994A3]">
                     EduStruct
@@ -87,12 +88,12 @@ function App() {
                     path="/stack"
                   />
 
-                  <Card
+                  {/* <Card
                     title="Linked List"
                     description="Linked list adalah struktur data linier yang digunakan untuk menyimpan koleksi elemen. Berbeda dengan array konvensional yang menyimpan elemennya di lokasi memori yang berdekatan (kontigu), elemen-elemen pada linked list tersebar di memori namun saling terhubung menggunakan penunjuk (pointer)."
                     color="bg-[#53aaed]"
                     path="/linked-list"
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
@@ -104,7 +105,10 @@ function App() {
         <Route path="/queue" element={<QueueComponent />} />
         <Route path="/stack" element={<StackComponent />} />
       </Routes>
+
+      <Footer />
     </div>
+    
   );
 }
 export default App;

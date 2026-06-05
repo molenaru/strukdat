@@ -1,5 +1,6 @@
 import { useState } from "react";
 // import "./App.css";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [theme, setTheme] = useState((window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light");
@@ -11,9 +12,9 @@ function Navbar() {
     // Update CSS variables sesuai tema
     const root = document.documentElement;
     if (newTheme === "dark") {
-      root.style.setProperty("--text", "#9ca3af");
+      root.style.setProperty("--text", "#EEEEEE");
       root.style.setProperty("--text-h", "#f3f4f6");
-      root.style.setProperty("--bg", "#16171d");
+      root.style.setProperty("--bg", "#213C51");
       root.style.setProperty("--border", "#2e303a");
       root.style.setProperty("--code-bg", "#1f2028");
       root.style.setProperty("--accent", "#c084fc");
@@ -38,7 +39,9 @@ function Navbar() {
     <nav className="relative bg-[var(--bg)] text-[var(--text)] border-b border-[var(--border)]">
       <div className="mx-auto max-w-7xl px-4 flex h-16 items-center justify-between">
         {/* Logo */}
-        <img src="/logo.png" className="h-32"  alt="" />
+        <Link to="/" className="cursor-pointer flex items-center">
+          <img src="/logo.png" className="h-32" alt="Logo" />
+        </Link>
 
         {/* Tombol toggle tema */}
         <button

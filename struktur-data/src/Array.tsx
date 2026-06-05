@@ -143,11 +143,29 @@ const ArrayComponent: React.FC = () => {
   };
 
   return (
-    <div className="bg-white min-h-screen p-6">
-      <h2 className="text-2xl font-bold mb-4 text-black">Array</h2>
+    <div className="min-h-screen p-6">
+      <div className="flex justify-center flex-col sm:flex-row p-5 pt-0 gap-5">
+        <div className="text-left outline outline-2 rounded-xl p-6 shadow-lg">
+          <div className="text-xl font-medium text-[#FE4020]">
+            Array
+          </div>
+          <p className="text-justify mt-2">
+            Array adalah struktur data linear yang menyimpan sekumpulan elemen dengan tipe data yang sama di dalam blok memori yang berurutan. Setiap elemen di dalam Array dapat diakses secara langsung melalui sebuah angka penunjuk yang disebut indeks (biasanya dimulai dari angka 0).
+          </p>
+        </div>
 
-      <div className="container mx-auto p-4 flex flex-col bg-gray-800 rounded-xl mb-8 ">
-        <h1 className="text-xl font-bold text-black dark:text-white text-start mb-4 mt-0">Visualisasi</h1>
+        <div className="text-left outline outline-2 rounded-xl p-6 shadow-lg">
+          <div className="text-xl font-medium text-[#FE4020]">
+            Analogi
+          </div>
+          <p className="text-justify mt-2">
+            Bayangkan sebuah loker penyimpanan barang yang bernomor urut dari 0 sampai N. Jika Anda tahu nomor lokernya (indeksnya), Anda bisa langsung membuka loker tersebut secara instan tanpa perlu mengecek loker lain satu per satu.
+          </p>
+        </div>
+      </div>
+
+      <div className="m-5 mt-0 p-4 flex flex-col outline outline-2 rounded-xl mb-8 shadow-lg ">
+        <h1 className="text-xl font-bold text-start mb-4 mt-0">Visualisasi</h1>
 
         {/* Tampilan array horizontal */}
         <div className="flex gap-2 flex-wrap justify-center pb-8 min-h-[120px]">
@@ -156,42 +174,40 @@ const ArrayComponent: React.FC = () => {
               <div className="w-12 h-12 border flex items-center justify-center text-black bg-gray-100">
                 {num !== null ? num : ""}
               </div>
-              <span className="text-white text-xs tracking-wide mt-1">Index {index}</span>
+              <span className="text-xs tracking-wide mt-1">Index {index}</span>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="container mx-auto p-4 bg-white flex">
+      <div className="m-0 p-2 md:m-5 md:p-4 flex w-full">
 
-
-        {/* section array */}
-        <div className="mx-auto p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700 w-full">
+        {/* Section Array */}
+        <div className="m-2 mt-0 p-4 md:m-5 md:p-6 bg-[#213448] rounded-2xl shadow-lg mb-8 outline outline-2 dark:border-gray-700 w-full">
 
           {/* Title */}
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0  text-start">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0 text-start">
             Konfigurasi
           </h1>
 
           <div className="space-y-5">
 
             {/* Buat Array */}
-            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
+            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] items-start md:items-center gap-2 md:gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 pt-1 md:pt-0">
                 Buat Array
               </label>
 
-              <div className="flex items-center gap-3">
+              <div className="flex flex-row items-center gap-3 w-full">
                 <input
                   value={arraySize}
                   onChange={(e) => setArraySize(e.target.value)}
                   placeholder="Ukuran array (1–20)"
-                  className="h-11 w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400"
+                  className="h-11 flex-1 md:flex-initial md:w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 min-w-0"
                 />
-
                 <button
                   onClick={handleCreateArray}
-                  className="h-11 min-w-[120px] bg-green-500 hover:bg-green-600 transition text-white font-medium rounded-xl"
+                  className="h-11 px-4 md:min-w-[120px] bg-green-500 hover:bg-green-600 transition text-white font-medium rounded-xl shrink-0"
                 >
                   Buat
                 </button>
@@ -199,70 +215,69 @@ const ArrayComponent: React.FC = () => {
             </div>
 
             {/* Add Value */}
-              <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-                <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
-                  Add Single Value
-                </label>
+            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] items-start md:items-center gap-2 md:gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 pt-1 md:pt-0">
+                Add Single Value
+              </label>
 
-                <div className="flex items-center gap-3">
-                  <input
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    placeholder="Value"
-                    disabled={numbers.length === 0}
-                    className="h-11 w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-
-                  <button
-                    onClick={handleAddValue}
-                    disabled={numbers.length === 0}
-                    className="h-11 min-w-[120px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    Add
-                  </button>
-                </div>
+              <div className="flex flex-row items-center gap-3 w-full">
+                <input
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Value"
+                  disabled={numbers.length === 0}
+                  className="h-11 flex-1 md:flex-initial md:w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:cursor-not-allowed disabled:opacity-50 min-w-0"
+                />
+                <button
+                  onClick={handleAddValue}
+                  disabled={numbers.length === 0}
+                  className="h-11 px-4 md:min-w-[120px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60 shrink-0"
+                >
+                  Add
+                </button>
               </div>
+            </div>
 
             {/* Add Batch */}
-              <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-                <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
-                  Add Multi Value
-                </label>
+            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] items-start md:items-center gap-2 md:gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 pt-1 md:pt-0">
+                Add Multi Value
+              </label>
 
-                <div className="flex items-center gap-3">
-                  <input
-                    value={batchValues}
-                    onChange={(e) => setBatchValues(e.target.value)}
-                    placeholder="Contoh: 1,2,3,4"
-                    disabled={numbers.length === 0}
-                    className="h-11 w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-
-                  <button
-                    onClick={handleAddBatchValues}
-                    disabled={numbers.length === 0}
-                    className="h-11 min-w-[120px] bg-purple-500 hover:bg-purple-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    Add
-                  </button>
-                </div>
+              <div className="flex flex-row items-center gap-3 w-full">
+                <input
+                  value={batchValues}
+                  onChange={(e) => setBatchValues(e.target.value)}
+                  placeholder="Contoh: 1,2,3,4"
+                  disabled={numbers.length === 0}
+                  className="h-11 flex-1 md:flex-initial md:w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:cursor-not-allowed disabled:opacity-50 min-w-0"
+                />
+                <button
+                  onClick={handleAddBatchValues}
+                  disabled={numbers.length === 0}
+                  className="h-11 px-4 md:min-w-[120px] bg-purple-500 hover:bg-purple-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60 shrink-0"
+                >
+                  Add
+                </button>
               </div>
+            </div>
 
-            <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
+            {/* Aksi Cepat */}
+            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] items-start md:items-center gap-2 md:gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 pt-1 md:pt-0">
                 Aksi Cepat
               </label>
-              <div className="flex items-center gap-3 flex-wrap">
+              <div className="flex items-center gap-3 w-full">
                 <button
                   onClick={handleRandomArray}
-                  className="h-11 min-w-[140px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl"
+                  className="h-11 flex-1 md:flex-none md:min-w-[140px] bg-blue-500 hover:bg-blue-600 transition text-white font-medium rounded-xl"
                 >
                   Random
                 </button>
                 <button
                   onClick={handleClearArray}
                   disabled={numbers.length === 0}
-                  className="h-11 min-w-[140px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
+                  className="h-11 flex-1 md:flex-none md:min-w-[140px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   Clear Array
                 </button>
@@ -270,66 +285,62 @@ const ArrayComponent: React.FC = () => {
             </div>
 
             {/* Update Value */}
-              <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-                <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
-                  Update Value
-                </label>
+            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] items-start md:items-center gap-2 md:gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 pt-1 md:pt-0">
+                Update Value
+              </label>
 
-                <div className="flex items-center gap-3">
-                  <input
-                    value={updateIndex}
-                    onChange={(e) => setUpdateIndex(e.target.value)}
-                    placeholder="Index"
-                    disabled={numbers.length === 0}
-                    className="h-11 w-28 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-
-                  <input
-                    value={updateValueInput}
-                    onChange={(e) => setUpdateValueInput(e.target.value)}
-                    placeholder="Value baru"
-                    disabled={numbers.length === 0}
-                    className="h-11 w-32 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-
-                  <button
-                    onClick={handleUpdateValue}
-                    disabled={numbers.length === 0}
-                    className="h-11 min-w-[120px] bg-yellow-500 hover:bg-yellow-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    Update
-                  </button>
-                </div>
+              <div className="flex flex-row items-center gap-3 w-full">
+                <input
+                  value={updateIndex}
+                  onChange={(e) => setUpdateIndex(e.target.value)}
+                  placeholder="Index"
+                  disabled={numbers.length === 0}
+                  className="h-11 w-20 md:w-28 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 disabled:cursor-not-allowed disabled:opacity-50 min-w-0"
+                />
+                <input
+                  value={updateValueInput}
+                  onChange={(e) => setUpdateValueInput(e.target.value)}
+                  placeholder="Value baru"
+                  disabled={numbers.length === 0}
+                  className="h-11 flex-1 md:flex-initial md:w-32 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 disabled:cursor-not-allowed disabled:opacity-50 min-w-0"
+                />
+                <button
+                  onClick={handleUpdateValue}
+                  disabled={numbers.length === 0}
+                  className="h-11 px-4 md:min-w-[120px] bg-yellow-500 hover:bg-yellow-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60 shrink-0"
+                >
+                  Update
+                </button>
               </div>
+            </div>
 
             {/* Delete Value */}
-              <div className="grid grid-cols-[180px_1fr] items-center gap-4">
-                <label className="text-start font-semibold text-gray-700 dark:text-gray-200">
-                  Delete Value
-                </label>
+            <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] items-start md:items-center gap-2 md:gap-4">
+              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 pt-1 md:pt-0">
+                Delete Value
+              </label>
 
-                <div className="flex items-center gap-3">
-                  <input
-                    value={deleteIndex}
-                    onChange={(e) => setDeleteIndex(e.target.value)}
-                    placeholder="Index"
-                    disabled={numbers.length === 0}
-                    className="h-11 w-28 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-red-400 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
-
-                  <button
-                    onClick={handleDeleteValue}
-                    disabled={numbers.length === 0}
-                    className="h-11 min-w-[120px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    Delete
-                  </button>
-                </div>
+              <div className="flex flex-row items-center gap-3 w-full">
+                <input
+                  value={deleteIndex}
+                  onChange={(e) => setDeleteIndex(e.target.value)}
+                  placeholder="Index"
+                  disabled={numbers.length === 0}
+                  className="h-11 flex-1 md:flex-initial md:w-28 border border-gray-300 dark:border-gray-600 rounded-xl px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-red-400 disabled:cursor-not-allowed disabled:opacity-50 min-w-0"
+                />
+                <button
+                  onClick={handleDeleteValue}
+                  disabled={numbers.length === 0}
+                  className="h-11 px-4 md:min-w-[120px] bg-red-500 hover:bg-red-600 transition text-white font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60 shrink-0"
+                >
+                  Delete
+                </button>
               </div>
+            </div>
 
           </div>
         </div>
-
       </div>
 
       {/* Error Popup */}
@@ -356,6 +367,7 @@ const ArrayComponent: React.FC = () => {
 
       )}
 
+    
 
     </div>
   );
