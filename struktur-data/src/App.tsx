@@ -1,5 +1,4 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import Nav from "./Navbar";
 import Footer from "./Footer";
@@ -20,15 +19,7 @@ function App() {
     <div className="min-h-screen">
       <Nav />
       {/* title */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={location.pathname}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-        >
-          <Routes location={location}>
+      <Routes location={location}>
         {/* Halaman utama */}
         <Route
           path="/"
@@ -121,8 +112,6 @@ function App() {
         <Route path="/queue" element={<QueueComponent />} />
         <Route path="/stack" element={<StackComponent />} />
       </Routes>
-        </motion.div>
-      </AnimatePresence>
 
       <Footer />
     </div>
