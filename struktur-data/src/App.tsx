@@ -72,7 +72,7 @@ function App() {
               {/* card */}
               <div className="rounded-xl outline outline-2 m-5">
                 <div className="flex justify-start pl-10">
-                  <h1 className="text-4xl text-[#FE3E20] font-bold text-left">Modul Pembelajaran</h1>
+                  <h1 className="text-2xl text-[#FE3E20] font-bold text-left pt-5 pb-5">Modul Pembelajaran</h1>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 p-5 pt-0 justify-items-center">

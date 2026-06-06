@@ -216,151 +216,147 @@ const SortingComponent: React.FC = () => {
         )}
       </div>
 
-      <div className="m-5 p-4">
-        <div className="p-4 sm:p-6 rounded-xl bg-[#213448] shadow-lg mb-8 outline outline-2 w-full">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0 text-start">
-            Konfigurasi
-          </h1>
+      <div className="m-0 p-0 sm:m-5 sm:p-4">
+  <div className="p-4 sm:p-6 rounded-xl bg-[#213448] shadow-lg mb-8 outline outline-2 outline-gray-700 w-full box-border">
+    <h1 className="text-xl sm:text-2xl font-bold text-white mb-6 mt-0 text-start">
+      Konfigurasi
+    </h1>
 
-          <div className="space-y-5">
-            {/* Add */}
-            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] lg:grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 text-sm sm:text-base">
-                Add
-              </label>
+    <div className="space-y-5">
+      {/* Add */}
+      <div className="grid grid-cols-1 lg:grid-cols-[180px_1fr] items-start lg:items-center gap-2 lg:gap-4">
+        <label className="text-start font-semibold text-gray-200 text-sm sm:text-base pt-1 lg:pt-0">
+          Add
+        </label>
 
-              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                <input
-                  value={batchValues}
-                  onChange={(e) => setBatchValues(e.target.value)}
-                  placeholder="Contoh: 1,2,3,4"
-                  disabled={isSorting}
-                  className="h-10 sm:h-11 w-40 sm:w-52 md:w-64 border border-gray-300 dark:border-gray-600 rounded-xl px-3 sm:px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:cursor-not-allowed disabled:opacity-50"
-                />
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap w-full">
+          <input
+            value={batchValues}
+            onChange={(e) => setBatchValues(e.target.value)}
+            placeholder="Contoh: 1,2,3,4"
+            disabled={isSorting}
+            className="h-10 sm:h-11 flex-1 sm:flex-none w-full sm:w-52 md:w-64 border border-gray-600 rounded-xl px-3 sm:px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:cursor-not-allowed disabled:opacity-50 min-w-0"
+          />
 
-                <button
-                  onClick={handleLoadBatchValues}
-                  disabled={isSorting}
-                  className="h-10 sm:h-11 px-4 sm:px-6 bg-purple-500 hover:bg-purple-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  Add
-                </button>
-              </div>
-            </div>
-
-            {/* Aksi Cepat */}
-            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] lg:grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 text-sm sm:text-base">
-                Aksi Cepat
-              </label>
-
-              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                <button
-                  onClick={handleRandomArray}
-                  disabled={isSorting}
-                  className="h-10 sm:h-11 px-4 sm:px-6 bg-blue-500 hover:bg-blue-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  Random
-                </button>
-
-                <button
-                  onClick={handleClearArray}
-                  disabled={isSorting || numbers.length === 0}
-                  className="h-10 sm:h-11 px-4 sm:px-6 bg-red-500 hover:bg-red-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  Clear Array
-                </button>
-              </div>
-            </div>
-
-            {/* Pilih Algoritma */}
-            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] lg:grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 text-sm sm:text-base">
-                Pilih Algoritma
-              </label>
-
-              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                <select
-                  value={algorithm}
-                  onChange={(e) =>
-                    setAlgorithm(
-                      e.target.value as "bubble" | "selection" | "insertion"
-                    )
-                  }
-                  className="h-10 text-sm sm:h-11 w-36 sm:w-44 md:w-56 border border-gray-300 dark:border-gray-600 rounded-xl px-3 sm:px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                >
-                  <option value="bubble">Bubble Sort</option>
-                  <option value="selection">Selection Sort</option>
-                  <option value="insertion">Insertion Sort</option>
-                </select>
-
-                <select
-                  value={direction}
-                  onChange={(e) =>
-                    setDirection(e.target.value as "asc" | "desc")
-                  }
-                  className="h-10 text-sm sm:h-11 w-28 sm:w-36 border border-gray-300 dark:border-gray-600 rounded-xl px-3 sm:px-4 bg-white dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
-                >
-                  <option value="asc">Ascending</option>
-                  <option value="desc">Descending</option>
-                </select>
-
-                <button
-                  onClick={handleSort}
-                  disabled={isSorting || numbers.length === 0}
-                  className="h-10 sm:h-11 px-4 sm:px-6 bg-indigo-500 hover:bg-indigo-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  {isSorting ? "Sorting..." : "Sort"}
-                </button>
-              </div>
-            </div>
-
-            {/* Kecepatan */}
-            <div className="grid grid-cols-[100px_1fr] sm:grid-cols-[140px_1fr] lg:grid-cols-[180px_1fr] items-center gap-4">
-              <label className="text-start font-semibold text-gray-700 dark:text-gray-200 text-sm sm:text-base pb-2">
-                Kecepatan
-              </label>
-
-              <div className="flex items-center gap-3 flex-wrap">
-                <input
-                  type="range"
-                  min={100}
-                  max={1000}
-                  value={speed}
-                  disabled={isSorting}
-                  onChange={(e) => setSpeed(Number(e.target.value))}
-                  className="w-32 sm:w-48 md:w-56 lg:w-64"
-                />
-
-                <span className="text-sm sm:text-base text-gray-700 dark:text-gray-200">
-                  {speed} ms
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Error Popup */}
-          {error && (
-            <div
-              className={`fixed top-5 right-2 sm:right-5 z-50 ${closing ? "animate-slide-out" : "animate-slide-in"
-                }`}
-            >
-              <div className="bg-red-500 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 min-w-[250px] sm:min-w-[300px] max-w-[90vw]">
-                <p className="flex-1 text-sm sm:text-base break-words">
-                  {error}
-                </p>
-
-                <button
-                  onClick={() => setError("")}
-                  className="font-bold hover:opacity-70"
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-          )}
+          <button
+            onClick={handleLoadBatchValues}
+            disabled={isSorting}
+            className="h-10 sm:h-11 flex-1 sm:flex-none px-4 sm:px-6 bg-purple-500 hover:bg-purple-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60 whitespace-nowrap shrink-0"
+          >
+            Add
+          </button>
         </div>
       </div>
+
+      {/* Aksi Cepat */}
+      <div className="grid grid-cols-1 lg:grid-cols-[180px_1fr] items-start lg:items-center gap-2 lg:gap-4">
+        <label className="text-start font-semibold text-gray-200 text-sm sm:text-base pt-1 lg:pt-0">
+          Aksi Cepat
+        </label>
+
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap w-full">
+          <button
+            onClick={handleRandomArray}
+            disabled={isSorting}
+            className="h-10 sm:h-11 flex-1 sm:flex-none px-4 sm:px-6 bg-blue-500 hover:bg-blue-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60 whitespace-nowrap shrink-0"
+          >
+            Random
+          </button>
+
+          <button
+            onClick={handleClearArray}
+            disabled={isSorting || numbers.length === 0}
+            className="h-10 sm:h-11 flex-1 sm:flex-none px-4 sm:px-6 bg-red-500 hover:bg-red-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60 whitespace-nowrap shrink-0"
+          >
+            Clear Array
+          </button>
+        </div>
+      </div>
+
+      {/* Pilih Algoritma */}
+      <div className="grid grid-cols-1 lg:grid-cols-[180px_1fr] items-start lg:items-center gap-2 lg:gap-4">
+        <label className="text-start font-semibold text-gray-200 text-sm sm:text-base pt-1 lg:pt-0">
+          Pilih Algoritma
+        </label>
+
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap w-full">
+          <select
+            value={algorithm}
+            onChange={(e) =>
+              setAlgorithm(
+                e.target.value as "bubble" | "selection" | "insertion"
+              )
+            }
+            className="h-10 text-xs sm:h-11 flex-1 sm:flex-none w-full sm:w-44 md:w-56 border border-gray-600 rounded-xl px-3 sm:px-4 bg-white text-black focus:outline-none focus:ring-2 focus:ring-indigo-400 min-w-0"
+          >
+            <option value="bubble">Bubble Sort</option>
+            <option value="selection">Selection Sort</option>
+            <option value="insertion">Insertion Sort</option>
+          </select>
+
+          <select
+            value={direction}
+            onChange={(e) =>
+              setDirection(e.target.value as "asc" | "desc")
+            }
+            className="h-10 text-xs sm:h-11 flex-1 sm:flex-none w-full sm:w-36 border border-gray-600 rounded-xl px-3 sm:px-4 bg-white text-black focus:outline-none focus:ring-2 focus:ring-indigo-400 min-w-0"
+          >
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+
+          <button
+            onClick={handleSort}
+            disabled={isSorting || numbers.length === 0}
+            className="h-10 sm:h-11 flex-1 sm:flex-none px-4 sm:px-6 bg-indigo-500 hover:bg-indigo-600 transition text-white text-sm sm:text-base font-medium rounded-xl disabled:cursor-not-allowed disabled:opacity-60 whitespace-nowrap shrink-0"
+          >
+            {isSorting ? "Sorting..." : "Sort"}
+          </button>
+        </div>
+      </div>
+
+      {/* Kecepatan */}
+      <div className="grid grid-cols-1 lg:grid-cols-[180px_1fr] items-start lg:items-center gap-2 lg:gap-4">
+        <label className="text-start font-semibold text-gray-200 text-sm sm:text-base pt-1 lg:pt-0">
+          Kecepatan
+        </label>
+
+        <div className="flex items-center gap-3 flex-wrap w-full">
+          <input
+            type="range"
+            min={100}
+            max={1000}
+            value={speed}
+            disabled={isSorting}
+            onChange={(e) => setSpeed(Number(e.target.value))}
+            className="flex-1 sm:flex-none w-full sm:w-48 md:w-56 lg:w-64 accent-indigo-400"
+          />
+
+          <span className="text-sm sm:text-base text-gray-200 font-medium whitespace-nowrap">
+            {speed} ms
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {/* Error Popup */}
+    {error && (
+      <div className={`fixed top-5 right-2 sm:right-5 z-50 ${closing ? "animate-slide-out" : "animate-slide-in"}`}>
+        <div className="bg-red-500 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 min-w-[250px] sm:min-w-[300px] max-w-[90vw]">
+          <p className="flex-1 text-sm sm:text-base break-words">
+            {error}
+          </p>
+          <button
+            onClick={() => setError("")}
+            className="font-bold hover:opacity-70"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
 
     </div>
   );
