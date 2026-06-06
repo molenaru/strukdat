@@ -14,7 +14,7 @@ function Navbar() {
     if (newTheme === "dark") {
       root.style.setProperty("--text", "#EEEEEE");
       root.style.setProperty("--text-h", "#f3f4f6");
-      root.style.setProperty("--bg", "#213C51");
+      root.style.setProperty("--bg", "#16171d");
       root.style.setProperty("--border", "#2e303a");
       root.style.setProperty("--code-bg", "#1f2028");
       root.style.setProperty("--accent", "#c084fc");
@@ -36,7 +36,7 @@ function Navbar() {
 
   return (
     // Navbar
-    <nav className="relative bg-[var(--bg)] text-[var(--text)] border-b border-[var(--border)]">
+    <nav className="sticky top-0 z-50 relative bg-[var(--bg)] text-[var(--text)] border-b border-[var(--border)]">
       <div className="mx-auto max-w-7xl px-4 flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="cursor-pointer flex items-center">
