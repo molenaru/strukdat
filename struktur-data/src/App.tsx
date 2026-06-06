@@ -66,7 +66,7 @@ function App() {
                   <h1 className="text-2xl text-[#FE3E20] font-bold text-left pt-5 pb-5">Modul Pembelajaran</h1>
                 </div>
 
-                <div className="flex  flex-wrap justify-center gap-5 p-5 pt-0">
+                <div className="flex flex-wrap justify-center gap-5 p-5 pt-0">
                   <Card
                     title="Array"
                     description="Array adalah struktur data linear yang menyimpan sekumpulan elemen dengan tipe data yang sama di dalam blok memori yang berurutan. Setiap elemen di dalam Array dapat diakses secara langsung melalui sebuah angka penunjuk yang disebut indeks (biasanya dimulai dari angka 0)."
