@@ -24,6 +24,10 @@ function cloneItems(arr: SortItem[]): SortItem[] {
 }
 
 export function createArray(size: number): void {
+  if (size < 1 || size > 20) {
+    throw new Error("Ukuran array harus antara 1–20!");
+  }
+
   numbers = [];
   globalIdCounter = 0; // Reset counter ID unik
 }
