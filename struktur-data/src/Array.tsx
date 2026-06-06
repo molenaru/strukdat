@@ -164,7 +164,7 @@ const ArrayComponent: React.FC = () => {
         </div>
       </div>
 
-      <div className="m-5 mt-0 p-4 flex flex-col outline outline-2 rounded-xl mb-8 shadow-lg ">
+      <div className="m-5 mt-0 mb-2 p-4 flex flex-col outline outline-2 rounded-xl mb-8 shadow-lg ">
         <h1 className="text-xl font-bold text-start mb-4 mt-0">Visualisasi</h1>
 
         {/* Tampilan array horizontal */}
@@ -180,10 +180,10 @@ const ArrayComponent: React.FC = () => {
         </div>
       </div>
 
-      <div className="m-0 p-2 md:m-5 md:p-4 flex w-full">
+      <div className="m-2 mt-0 md:p-4 flex  ">
 
         {/* Section Array */}
-        <div className="m-2 mt-0 p-4 md:m-5 md:p-6 bg-[#213448] rounded-2xl shadow-lg mb-8 outline outline-2 dark:border-gray-700 w-full">
+        <div className="m-3 p-4 md:p-6 bg-[#213448] rounded-xl shadow-lg mb-8 outline outline-2 w-full">
 
           {/* Title */}
           <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0 text-start">
