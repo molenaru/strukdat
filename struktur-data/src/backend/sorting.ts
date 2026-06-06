@@ -23,7 +23,7 @@ function cloneItems(arr: SortItem[]): SortItem[] {
   }));
 }
 
-export function createArray(): void {
+export function createArray(size: number): void {
   numbers = [];
   globalIdCounter = 0; // Reset counter ID unik
 }
