@@ -1,4 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect } from "react";
 import Nav from "./Navbar";
 import Footer from "./Footer";
 import Card from "./components/Card";
@@ -8,11 +10,25 @@ import QueueComponent from "./queue";
 import StackComponent from "./stack";
 
 function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [location.pathname]);
+
   return (
     <div className="min-h-screen">
       <Nav />
       {/* title */}
-      <Routes>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -16 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+        >
+          <Routes location={location}>
         {/* Halaman utama */}
         <Route
           path="/"
@@ -59,7 +75,7 @@ function App() {
                   <h1 className="text-4xl text-[#FE3E20] font-bold text-left">Modul Pembelajaran</h1>
                 </div>
 
-                <div className="flex justify-center p-5 pt-0 gap-10 flex-wrap">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 p-5 pt-0 justify-items-center">
                   <Card
                     title="Array"
                     description="Array adalah struktur data linear yang menyimpan sekumpulan elemen dengan tipe data yang sama di dalam blok memori yang berurutan. Setiap elemen di dalam Array dapat diakses secara langsung melalui sebuah angka penunjuk yang disebut indeks (biasanya dimulai dari angka 0)."
@@ -105,6 +121,8 @@ function App() {
         <Route path="/queue" element={<QueueComponent />} />
         <Route path="/stack" element={<StackComponent />} />
       </Routes>
+        </motion.div>
+      </AnimatePresence>
 
       <Footer />
     </div>

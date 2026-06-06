@@ -12,7 +12,7 @@ const Card: React.FC<CardProps> = ({ title, description, color, path }) => {
 
   return (
     <div
-      className={`border border-black text-black w-80 h-85 rounded-xl shadow-xl overflow-hidden hover:scale-105 transition duration-300 flex flex-col justify-between ${color}`}
+      className={`border border-black text-black w-full max-w-[20rem] sm:w-80 min-h-[18rem] rounded-xl shadow-xl overflow-hidden hover:scale-105 transition duration-300 flex flex-col justify-between ${color}`}
     >
       <div className="p-5 pt-2 text-justify">
         <h1 className="text-xl text-black font-bold mb-2 mt-1">{title}</h1>
