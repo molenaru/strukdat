@@ -160,7 +160,7 @@ const QueueComponent: React.FC = () => {
         </div>
       </div>
 
-     <div className="m-5 mt-0 mb-0 p-4 flex flex-col outline outline-2 rounded-xl mb-8 max-h-[420px] overflow-y-auto">
+     <div className="m-5 mt-0 mb-0 p-4 flex flex-col outline outline-2 rounded-xl shrink-0 mb-8 h-[320px]">
         <h1 className="text-xl font-bold text-start mb-4 mt-0">Visualisasi</h1>
         <h1 className="text-xl text-center align-middle mb-4 mt-0">Kasir</h1>
 

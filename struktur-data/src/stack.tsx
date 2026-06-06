@@ -102,7 +102,7 @@ const StackComponent: React.FC = () => {
         </div>
       </div>
 
-      <div className="m-5 mt-0 mb-0 p-4 flex flex-col outline outline-2 rounded-xl mb-8 max-h-[420px] overflow-y-auto">
+      <div className="m-5 mt-0 mb-0 p-4 flex flex-col outline outline-2 rounded-xl shrink-0 mb-8 h-[320px]">
         <h1 className="text-xl font-bold text-start mb-4 mt-0">Visualisasi</h1>
 
         <div className="mt-auto" />
@@ -135,7 +135,7 @@ const StackComponent: React.FC = () => {
         </div>
       </div>
 
-      <div className="m-5 p-4">
+      <div className="m-5 p-4flex">
         <div className="mx-auto p-4 md:p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700 w-full box-border">
           {/* Title */}
           <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white mb-6 mt-0 text-start">

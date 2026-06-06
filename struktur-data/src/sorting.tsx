@@ -327,7 +327,6 @@ const SortingComponent: React.FC = () => {
             min={100}
             max={1000}
             value={speed}
-            disabled={isSorting}
             onChange={(e) => setSpeed(Number(e.target.value))}
             className="flex-1 sm:flex-none w-full sm:w-48 md:w-56 lg:w-64 accent-indigo-400"
           />
